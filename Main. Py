@@ -1,0 +1,43 @@
+from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.label import Label
+from kivy.uix.textinput import TextInput
+from kivy.uix.button import Button
+from kivy.uix.scrollview import ScrollView
+
+class KingMidoAI(App):
+    def build(self):
+        self.layout = BoxLayout(orientation='vertical', padding=10, spacing=10)
+        
+        # عنوان التطبيق
+        self.title_label = Label(text="King Mido AI - الترسانة", font_size=24, size_hint_y=None, height=50)
+        self.layout.add_widget(self.title_label)
+        
+        # شاشة عرض الرسائل
+        self.scroll = ScrollView()
+        self.chat_history = Label(text="مرحباً بك يا كينج! أنا جاهز للعمل...\n", size_hint_y=None, halign='right', valign='top')
+        self.chat_history.bind(texture_size=self.chat_history.setter('size'))
+        self.scroll.add_widget(self.chat_history)
+        self.layout.add_widget(self.scroll)
+        
+        # مكان كتابة الرسالة
+        self.input_box = TextInput(hint_text="اكتب رسالتك هنا يا ميدو...", multiline=False, size_hint_y=None, height=50)
+        self.layout.add_widget(self.input_box)
+        
+        # زر الإرسال
+        self.send_btn = Button(text="إرسال إلى الترسانة", size_hint_y=None, height=50, background_color=(0, 0.7, 1, 1))
+        self.send_btn.bind(on_press=self.send_message)
+        self.layout.add_widget(self.send_btn)
+        
+        return self.layout
+
+    def send_message(self, instance):
+        msg = self.input_box.text
+        if msg:
+            self.chat_history.text += f"ميدو: {msg}\n"
+            # هنا بنحط رد ذكي بسيط حالياً
+            self.chat_history.text += f"الترسانة: جاري تحليل طلبك يا كينج...\n"
+            self.input_box.text = ""
+
+if __name__ == "__main__":
+    KingMidoAI().run()
